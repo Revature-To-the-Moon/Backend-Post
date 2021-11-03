@@ -1,11 +1,10 @@
-﻿using DL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DL;
 using Models;
+using DL;
 
 namespace BL
 {
@@ -13,9 +12,16 @@ namespace BL
     {
         private IRepo _repo;
 
-        public PostBl(IRepo irepo)
+        public PostBl(IRepo repo)
         {
-            _repo = irepo;
+            _repo = repo;
+        }
+
+        //------------------------------------Methods For Getting List--------------------------------------
+
+        public async Task<List<Root>> GetRootListAsync()
+        {
+            return await _repo.GetRootListAsync();
         }
     }
 }
