@@ -40,17 +40,14 @@ namespace DL
                         Message = a.Message,
                         TotalVote = a.TotalVote,
                         UserName = a.UserName,
-                        Votes = a.Votes,
 
-                        Comments = a.Comments.Select(b => new Comment()
+                        Votes = a.Votes.Select(b => new Vote()
                         {
                             Id = b.Id,
-                            DateTime = b.DateTime,
-                            Message = b.Message,
-                            TotalVote = b.TotalVote,
                             UserName = b.UserName,
-                            Votes = b.Votes,
-                        }).ToList(),
+                            Value = b.Value
+
+                        }).ToList()
 
                     }).ToList(),
 
@@ -67,17 +64,26 @@ namespace DL
                     Message = r.Message,
                     TotalVote = r.TotalVote,
                     UserName = r.UserName,
-                    Votes = r.Votes,
 
-                    Comments = r.Comments.Select(a => new Comment()
+                    Votes = r.Votes.Select(a => new Vote()
                     {
                         Id = a.Id,
-                        DateTime = a.DateTime,
-                        Message = a.Message,
-                        TotalVote = a.TotalVote,
                         UserName = a.UserName,
-                        Votes = a.Votes,
-                    }).ToList(),
+                        Value = a.Value
+
+                    }).ToList()
+
+                }).ToListAsync();
+        }
+
+        public async Task<List<Vote>> GetVoteListAsync()
+        {
+            return await _context.Votes
+                .Select(r => new Vote()
+                {
+                    Id = r.Id,
+                    UserName = r.UserName,
+                    Value = r.Value
 
                 }).ToListAsync();
         }
@@ -105,17 +111,14 @@ namespace DL
                         Message = a.Message,
                         TotalVote = a.TotalVote,
                         UserName = a.UserName,
-                        Votes = a.Votes,
 
-                        Comments = a.Comments.Select(b => new Comment()
+                        Votes = a.Votes.Select(b => new Vote()
                         {
                             Id = b.Id,
-                            DateTime = b.DateTime,
-                            Message = b.Message,
-                            TotalVote = b.TotalVote,
                             UserName = b.UserName,
-                            Votes = b.Votes,
-                        }).ToList(),
+                            Value = b.Value
+
+                        }).ToList()
 
                     }).ToList(),
 
@@ -134,17 +137,27 @@ namespace DL
                     Message = r.Message,
                     TotalVote = r.TotalVote,
                     UserName = r.UserName,
-                    Votes = r.Votes,
 
-                    Comments = r.Comments.Select(a => new Comment()
+                    Votes = r.Votes.Select(a => new Vote()
                     {
                         Id = a.Id,
-                        DateTime = a.DateTime,
-                        Message = a.Message,
-                        TotalVote = a.TotalVote,
                         UserName = a.UserName,
-                        Votes = a.Votes,
-                    }).ToList(),
+                        Value = a.Value
+
+                    }).ToList()
+
+                }).FirstOrDefaultAsync(r => r.Id == id);
+        }
+
+        public async Task<Vote> GetVoteByIdAsync(int id)
+        {
+            return await _context.Votes
+                .AsNoTracking()
+                .Select(r => new Vote()
+                {
+                    Id = r.Id,
+                    UserName = r.UserName,
+                    Value = r.Value
 
                 }).FirstOrDefaultAsync(r => r.Id == id);
         }
@@ -165,6 +178,14 @@ namespace DL
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
             return comment;
+        }
+
+        public async Task<Vote> AddVoteAsync(Vote vote)
+        {
+            await _context.AddAsync(vote);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+            return vote;
         }
 
         //------------------------------------Methods for Updating DB--------------------------------------
@@ -203,6 +224,20 @@ namespace DL
             };
         }
 
+        public async Task<Vote> UpdateVoteAsync(Vote vote)
+        {
+            _context.Votes.Update(vote);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
+            return new Vote()
+            {
+                Id = vote.Id,
+                UserName = vote.UserName,
+                Value = vote.Value
+            };
+        }
+
         //------------------------------------Methods for Deleting From DB---------------------------------
 
         public async Task DeleteRootAsync(int id)
@@ -215,6 +250,13 @@ namespace DL
         public async Task DeleteCommentAsync(int id)
         {
             _context.Comments.Remove(await GetCommentByIdAsync(id));
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+        }
+
+        public async Task DeleteVoteAsync(int id)
+        {
+            _context.Votes.Remove(await GetVoteByIdAsync(id));
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
         }
