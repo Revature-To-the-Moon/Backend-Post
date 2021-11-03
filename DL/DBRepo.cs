@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DL
 {
@@ -20,10 +20,40 @@ namespace DL
 
         //------------------------------------Methods For Getting List--------------------------------------
 
-        public Task<List<Root>> GetRootListAsync()
+        public async Task<List<Root>> GetRootListAsync()
         {
-            throw new NotImplementedException();
-        }
+            return await _context.Roots
+                .Select(r => new Root()
+                {
+                    Id = r.Id,
+                    DateTime = r.DateTime,
+                    Message = r.Message,
+                    Title = r.Title,
+                    TotalVote = r.TotalVote,
+                    UserName = r.UserName,
 
+                    Comments = r.Comments.Select(a => new Comment()
+                    {
+                        Id = a.Id,
+                        DateTime = a.DateTime,
+                        Message = a.Message,
+                        TotalVote = a.TotalVote,
+                        UserName = a.UserName,
+                        Votes = a.Votes,
+
+                        Comments = a.Comments.Select(b => new Comment()
+                        {
+                            Id = b.Id,
+                            DateTime = b.DateTime,
+                            Message = b.Message,
+                            TotalVote = b.TotalVote,
+                            UserName = b.UserName,
+                            Votes = b.Votes,
+                        }).ToList(),
+
+                    }).ToList(),
+
+                }).ToListAsync();
+        }
     }
 }
