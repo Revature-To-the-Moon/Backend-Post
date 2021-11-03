@@ -12,5 +12,10 @@ namespace DL
         //------------------------------------Methods For Getting List--------------------------------------
 
         Task<List<Root>> GetRootListAsync();
+
+        //------------------------------------Methods For Getting Data by Id--------------------------------
+
+        Task<Root> GetRootByIdAsync(int id);
+
     }
 }

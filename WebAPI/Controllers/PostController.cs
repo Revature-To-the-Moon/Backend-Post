@@ -2,46 +2,50 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BL;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPI.Controllers
-    {
+{
+
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
+    {
+
+        private IBL _bl;
+
+        public PostController(IBL bl)
         {
+            _bl = bl;
+        }
+
+
         // GET: api/<PostController>
         [HttpGet]
-        public IEnumerable<string> Get()
-            {
-            return new string[] { "value1", "value2" };
-            }
+        public async Task<IEnumerable<Root>> Get()
+        {
+            return await _bl.GetRootListAsync();
+        }
 
         // GET api/<PostController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
+        {
+            Root selectedUser = await _bl.GetRootByIdAsync(id);
+            if (selectedUser != null)
             {
-            return "value";
+                return Ok(selectedUser);
             }
-
-        // POST api/<PostController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+            else
             {
-            }
-
-        // PUT api/<PostController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-            {
-            }
-
-        // DELETE api/<PostController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-            {
+                return NoContent();
             }
         }
+
+
     }
+}

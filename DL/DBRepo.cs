@@ -23,6 +23,7 @@ namespace DL
         public async Task<List<Root>> GetRootListAsync()
         {
             return await _context.Roots
+                .Include(r => r.Comments)
                 .Select(r => new Root()
                 {
                     Id = r.Id,
@@ -54,6 +55,47 @@ namespace DL
                     }).ToList(),
 
                 }).ToListAsync();
+        }
+
+        //------------------------------------Methods For Getting Data by Id--------------------------------
+
+        public async Task<Root> GetRootByIdAsync(int id)
+        {
+            return await _context.Roots
+                .Include(r => r.Comments)
+                .AsNoTracking()
+                .Select(r => new Root()
+                {
+                    Id = r.Id,
+                    DateTime = r.DateTime,
+                    Message = r.Message,
+                    Title = r.Title,
+                    TotalVote = r.TotalVote,
+                    UserName = r.UserName,
+
+                    Comments = r.Comments.Select(a => new Comment()
+                    {
+                        Id = a.Id,
+                        DateTime = a.DateTime,
+                        Message = a.Message,
+                        TotalVote = a.TotalVote,
+                        UserName = a.UserName,
+                        Votes = a.Votes,
+
+                        Comments = a.Comments.Select(b => new Comment()
+                        {
+                            Id = b.Id,
+                            DateTime = b.DateTime,
+                            Message = b.Message,
+                            TotalVote = b.TotalVote,
+                            UserName = b.UserName,
+                            Votes = b.Votes,
+                        }).ToList(),
+
+                    }).ToList(),
+
+                })
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
     }
 }
