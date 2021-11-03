@@ -97,5 +97,34 @@ namespace DL
                 })
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
+
+        //------------------------------------Methods for Adding To DB--------------------------------------
+
+        public async Task<Root> AddRootAsync(Root root)
+        {
+            await _context.AddAsync(root);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+            return root;
+        }
+
+        //------------------------------------Methods for Updating DB--------------------------------------
+        
+        public async Task<Root> UpdateRootAsync(Root root)
+        {
+            _context.Roots.Update(root);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
+            return new Root()
+            {
+                Id = root.Id,
+                DateTime = root.DateTime,
+                Message = root.Message,
+                Title = root.Title,
+                TotalVote = root.TotalVote,
+                UserName = root.UserName
+            };
+        }
     }
 }
