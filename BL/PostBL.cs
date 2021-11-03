@@ -30,5 +30,20 @@ namespace BL
         {
             return await _repo.GetRootByIdAsync(id);
         }
+
+        //------------------------------------Methods for Adding To DB--------------------------------------
+
+        public async Task<Root> AddRootAsync(Root root)
+        {
+            return await _repo.AddRootAsync(root);
+        }
+
+        //------------------------------------Methods for Updating DB--------------------------------------
+        
+        public async Task<Root> UpdateRootAsync(Root root)
+        {
+            return await _repo.UpdateRootAsync(root);
+        }
+
     }
 }

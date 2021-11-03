@@ -17,5 +17,13 @@ namespace DL
 
         Task<Root> GetRootByIdAsync(int id);
 
+        //------------------------------------Methods for Adding To DB--------------------------------------
+
+        Task<Root> AddRootAsync(Root root);
+
+        //------------------------------------Methods for Updating DB--------------------------------------
+
+        Task<Root> UpdateRootAsync(Root root);
+
     }
 }

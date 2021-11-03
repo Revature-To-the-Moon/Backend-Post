@@ -31,6 +31,7 @@ namespace WebAPI.Controllers
             return await _bl.GetRootListAsync();
         }
 
+
         // GET api/<PostController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -46,6 +47,23 @@ namespace WebAPI.Controllers
             }
         }
 
+
+        // POST api/<PostController>/5
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] Root root)
+        {
+            Root addRoot = await _bl.AddRootAsync(root);
+            return Created("api/[controller]", addRoot);
+        }
+
+
+        // PUT api/<UserController>/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromBody] Root newRoot)
+        {
+            Root updatedRoot = await _bl.UpdateRootAsync(newRoot);
+            return Ok(updatedRoot);
+        }
 
     }
 }
