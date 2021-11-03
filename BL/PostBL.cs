@@ -10,7 +10,7 @@ namespace BL
 {
     public class PostBl : IBL
     {
-        private IRepo _repo;
+        readonly private IRepo _repo;
 
         public PostBl(IRepo repo)
         {
