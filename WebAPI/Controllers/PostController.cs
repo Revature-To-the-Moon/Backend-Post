@@ -36,10 +36,10 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            Root selectedUser = await _bl.GetRootByIdAsync(id);
-            if (selectedUser != null)
+            Root selectedRoot = await _bl.GetRootByIdAsync(id);
+            if (selectedRoot != null)
             {
-                return Ok(selectedUser);
+                return Ok(selectedRoot);
             }
             else
             {

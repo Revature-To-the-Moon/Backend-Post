@@ -24,11 +24,21 @@ namespace BL
             return await _repo.GetRootListAsync();
         }
 
+        public async Task<List<Comment>> GetCommentListAsync()
+        {
+            return await _repo.GetCommentListAsync();
+        }
+
         //------------------------------------Methods For Getting Data by Id--------------------------------
 
         public async Task<Root> GetRootByIdAsync(int id)
         {
             return await _repo.GetRootByIdAsync(id);
+        }
+
+        public async Task<Comment> GetCommentByIdAsync(int id)
+        {
+            return await _repo.GetCommentByIdAsync(id);
         }
 
         //------------------------------------Methods for Adding To DB--------------------------------------
@@ -38,11 +48,21 @@ namespace BL
             return await _repo.AddRootAsync(root);
         }
 
+        public async Task<Comment> AddCommentAsync(Comment comment)
+        {
+            return await _repo.AddCommentAsync(comment);
+        }
+
         //------------------------------------Methods for Updating DB--------------------------------------
-        
+
         public async Task<Root> UpdateRootAsync(Root root)
         {
             return await _repo.UpdateRootAsync(root);
+        }
+
+        public async Task<Comment> UpdateCommentAsync(Comment comment)
+        {
+            return await _repo.UpdateCommentAsync(comment);
         }
 
         //------------------------------------Methods for Deleting From DB---------------------------------
@@ -50,6 +70,11 @@ namespace BL
         public async Task DeleteRootAsync(int id)
         {
             await _repo.DeleteRootAsync(id);
+        }
+
+        public async Task DeleteCommentAsync(int id)
+        {
+            await _repo.DeleteCommentAsync(id);
         }
 
     }
