@@ -29,6 +29,11 @@ namespace BL
             return await _repo.GetCommentListAsync();
         }
 
+        public async Task<List<Vote>> GetVoteListAsync()
+        {
+            return await _repo.GetVoteListAsync();
+        }
+
         //------------------------------------Methods For Getting Data by Id--------------------------------
 
         public async Task<Root> GetRootByIdAsync(int id)
@@ -39,6 +44,11 @@ namespace BL
         public async Task<Comment> GetCommentByIdAsync(int id)
         {
             return await _repo.GetCommentByIdAsync(id);
+        }
+
+        public async Task<Vote> GetVoteByIdAsync(int id)
+        {
+            return await _repo.GetVoteByIdAsync(id);
         }
 
         //------------------------------------Methods for Adding To DB--------------------------------------
@@ -53,6 +63,11 @@ namespace BL
             return await _repo.AddCommentAsync(comment);
         }
 
+        public async Task<Vote> AddVoteAsync(Vote vote)
+        {
+            return await _repo.AddVoteAsync(vote);
+        }
+
         //------------------------------------Methods for Updating DB--------------------------------------
 
         public async Task<Root> UpdateRootAsync(Root root)
@@ -65,6 +80,11 @@ namespace BL
             return await _repo.UpdateCommentAsync(comment);
         }
 
+        public async Task<Vote> UpdateVoteAsync(Vote vote)
+        {
+            return await _repo.UpdateVoteAsync(vote);
+        }
+
         //------------------------------------Methods for Deleting From DB---------------------------------
 
         public async Task DeleteRootAsync(int id)
@@ -75,6 +95,11 @@ namespace BL
         public async Task DeleteCommentAsync(int id)
         {
             await _repo.DeleteCommentAsync(id);
+        }
+
+        public async Task DeleteVoteAsync(int id)
+        {
+            await _repo.DeleteVoteAsync(id);
         }
 
     }

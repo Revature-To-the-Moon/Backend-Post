@@ -2,46 +2,72 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BL;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPI.Controllers
-    {
+{
     [Route("api/[controller]")]
     [ApiController]
     public class VoteController : ControllerBase
+    {
+        private IBL _bl;
+
+        public VoteController(IBL bl)
         {
+            _bl = bl;
+        }
+
         // GET: api/<VoteController>
         [HttpGet]
-        public IEnumerable<string> Get()
-            {
-            return new string[] { "value1", "value2" };
-            }
+        public async Task<IEnumerable<Vote>> Get()
+        {
+            return await _bl.GetVoteListAsync();
+        }
+
 
         // GET api/<VoteController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
+        {
+            Vote selectedVote = await _bl.GetVoteByIdAsync(id);
+            if (selectedVote != null)
             {
-            return "value";
+                return Ok(selectedVote);
             }
+            else
+            {
+                return NoContent();
+            }
+        }
 
-        // POST api/<VoteController>
+
+        // POST api/<VoteController>/5
         [HttpPost]
-        public void Post([FromBody] string value)
-            {
-            }
+        public async Task<IActionResult> Post([FromBody] Vote vote)
+        {
+            Vote addVote = await _bl.AddVoteAsync(vote);
+            return Created("api/[controller]", addVote);
+        }
+
 
         // PUT api/<VoteController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-            {
-            }
+        public async Task<IActionResult> Put([FromBody] Vote newVote)
+        {
+            Vote updatedVote = await _bl.UpdateVoteAsync(newVote);
+            return Ok(updatedVote);
+        }
+
 
         // DELETE api/<VoteController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
-            {
-            }
+        public async Task Delete(int id)
+        {
+            await _bl.DeleteVoteAsync(id);
         }
     }
+}
