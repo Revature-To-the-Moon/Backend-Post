@@ -57,7 +57,7 @@ namespace WebAPI.Controllers
         }
 
 
-        // PUT api/<UserController>/5
+        // PUT api/<PostController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromBody] Root newRoot)
         {
@@ -65,5 +65,12 @@ namespace WebAPI.Controllers
             return Ok(updatedRoot);
         }
 
+
+        // DELETE api/<PostController>/5
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _bl.DeleteRootAsync(id);
+        }
     }
 }

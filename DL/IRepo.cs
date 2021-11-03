@@ -25,5 +25,9 @@ namespace DL
 
         Task<Root> UpdateRootAsync(Root root);
 
+        //------------------------------------Methods for Deleting From DB---------------------------------
+
+        Task DeleteRootAsync(int id);
+
     }
 }
