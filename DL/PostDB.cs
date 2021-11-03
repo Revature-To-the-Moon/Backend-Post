@@ -9,5 +9,11 @@ namespace DL
         public PostDB() : base() { }
 
         public PostDB(DbContextOptions options) : base(options) { }
+
+        public DbSet<Root> Roots { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Vote> Votes { get; set; }
     }
 }
