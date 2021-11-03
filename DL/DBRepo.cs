@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq;
+
 using System.Threading.Tasks;
 using Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ namespace DL
 {
     public class DBRepo : IRepo
     {
-        private PostDB _context;
+       readonly private PostDB _context;
 
         public DBRepo(PostDB context)
         {
