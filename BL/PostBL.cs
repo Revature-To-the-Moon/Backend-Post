@@ -23,5 +23,12 @@ namespace BL
         {
             return await _repo.GetRootListAsync();
         }
+
+        //------------------------------------Methods For Getting Data by Id--------------------------------
+
+        public async Task<Root> GetRootByIdAsync(int id)
+        {
+            return await _repo.GetRootByIdAsync(id);
+        }
     }
 }
