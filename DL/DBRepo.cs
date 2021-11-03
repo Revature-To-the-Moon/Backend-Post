@@ -126,5 +126,14 @@ namespace DL
                 UserName = root.UserName
             };
         }
+
+        //------------------------------------Methods for Deleting From DB---------------------------------
+
+        public async Task DeleteRootAsync(int id)
+        {
+            _context.Roots.Remove(await GetRootByIdAsync(id));
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+        }
     }
 }

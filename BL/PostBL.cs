@@ -45,5 +45,12 @@ namespace BL
             return await _repo.UpdateRootAsync(root);
         }
 
+        //------------------------------------Methods for Deleting From DB---------------------------------
+
+        public async Task DeleteRootAsync(int id)
+        {
+            await _repo.DeleteRootAsync(id);
+        }
+
     }
 }
