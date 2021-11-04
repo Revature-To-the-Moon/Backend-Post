@@ -14,7 +14,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class VoteController : ControllerBase
     {
-        private IBL _bl;
+        readonly private IBL _bl;
 
         public VoteController(IBL bl)
         {
