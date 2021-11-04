@@ -14,7 +14,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private IBL _bl;
+        readonly private IBL _bl;
 
         public CommentController(IBL bl)
         {
