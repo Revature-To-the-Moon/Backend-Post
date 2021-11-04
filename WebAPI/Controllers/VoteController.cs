@@ -23,10 +23,18 @@ namespace WebAPI.Controllers
 
         // GET: api/<VoteController>
         [HttpGet]
-        public async Task<IEnumerable<Vote>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _bl.GetVoteListAsync();
-        }
+            List<Vote> voteList = await _bl.GetVoteListAsync();
+            if (voteList != null)
+                {
+                return Ok(voteList);
+                }
+            else
+                {
+                return NoContent();
+                }
+            }
 
 
         // GET api/<VoteController>/5
@@ -65,9 +73,11 @@ namespace WebAPI.Controllers
 
         // DELETE api/<VoteController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            Vote deleteVote = await _bl.GetVoteByIdAsync(id);
             await _bl.DeleteVoteAsync(id);
+            return Ok(deleteVote);
         }
     }
 }
