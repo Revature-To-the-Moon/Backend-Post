@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     public class PostController : ControllerBase
     {
 
-        private IBL _bl;
+        readonly private IBL _bl;
 
         public PostController(IBL bl)
         {
