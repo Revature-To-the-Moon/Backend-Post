@@ -3,6 +3,11 @@ using DL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using BL;
+using DL;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +38,8 @@ namespace WebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
             });
-
+            services.AddDbContext<PostDB>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("PostDB")));
             services.AddScoped<IRepo, DBRepo>();
             services.AddScoped<IBL, PostBl>();
         }
