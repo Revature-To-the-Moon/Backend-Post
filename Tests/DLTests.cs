@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -124,7 +124,7 @@ namespace Tests
                 IRepo repo = new DBRepo(context);
                 Root rootToAdd = new Root()
                 {
-                    Id = 1,
+                    Id = 1000,
                     Title = "add TheTitle",
                     Message = "add a testing message",
                     TotalVote = 1,
@@ -137,7 +137,7 @@ namespace Tests
 
             using (var context = new PostDB(options))
             {
-                Root root = context.Roots.FirstOrDefault(u => u.Id == 1);
+                Root root = context.Roots.FirstOrDefault(u => u.Id == 1000);
 
                 Assert.NotNull(root);
                 Assert.Equal("add TheTitle", root.Title);
@@ -156,7 +156,7 @@ namespace Tests
                 IRepo repo = new DBRepo(context);
                 Comment commentToAdd = new Comment()
                 {
-                    Id = 10,
+                    Id = 1001,
                     Message = "add a testing message",
                     TotalVote = 1,
                     DateTime = new DateTime(2021, 1, 1, 1, 1, 1),
@@ -168,7 +168,7 @@ namespace Tests
 
             using (var context = new PostDB(options))
             {
-                Comment comment = context.Comments.FirstOrDefault(u => u.Id == 10);
+                Comment comment = context.Comments.FirstOrDefault(u => u.Id == 1001);
 
                 Assert.NotNull(comment);
                 Assert.Equal("add a testing message", comment.Message);
@@ -186,7 +186,7 @@ namespace Tests
                 IRepo repo = new DBRepo(context);
                 Vote voteToAdd = new Vote()
                 {
-                    Id = 100,
+                    Id = 1002,
                     Value = 1,
                     UserName = "addtestuser"
                 };
@@ -196,7 +196,7 @@ namespace Tests
 
             using (var context = new PostDB(options))
             {
-                Vote vote = context.Votes.FirstOrDefault(u => u.Id == 100);
+                Vote vote = context.Votes.FirstOrDefault(u => u.Id == 1002);
 
                 Assert.NotNull(vote);
                 Assert.Equal(1, vote.Value);
@@ -303,7 +303,7 @@ namespace Tests
             {
 
                 IRepo repo = new DBRepo(context);
-                Vote voteToUpdate = await repo.GetVoteByIdAsync(11);
+                Vote voteToUpdate = await repo.GetVoteByIdAsync(100);
 
                 voteToUpdate.Value = 42;
 
@@ -313,7 +313,7 @@ namespace Tests
 
             using (var context = new PostDB(options))
             {
-                Vote vote = context.Votes.FirstOrDefault(e => e.Id == 11);
+                Vote vote = context.Votes.FirstOrDefault(e => e.Id == 100);
 
                 Assert.NotNull(vote);
                 Assert.Equal(42, vote.Value);

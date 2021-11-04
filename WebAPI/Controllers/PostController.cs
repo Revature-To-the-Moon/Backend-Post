@@ -26,10 +26,18 @@ namespace WebAPI.Controllers
 
         // GET: api/<PostController>
         [HttpGet]
-        public async Task<IEnumerable<Root>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _bl.GetRootListAsync();
-        }
+            List<Root> rootList = await _bl.GetRootListAsync();
+            if (rootList != null)
+                {
+                return Ok(rootList);
+                }
+            else
+                {
+                return NoContent();
+                }
+            }
 
 
         // GET api/<PostController>/5
@@ -68,9 +76,11 @@ namespace WebAPI.Controllers
 
         // DELETE api/<PostController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            Root delteRoot = await _bl.GetRootByIdAsync(id);
             await _bl.DeleteRootAsync(id);
+            return Ok(delteRoot);
         }
     }
 }
