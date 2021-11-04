@@ -242,12 +242,131 @@ namespace Tests
 
 
             PostController service = new PostController(mockBL.Object);
-            var result = await service.Put(mockRoot) as ObjectResult;
+            var result = await service.Delete(1) as ObjectResult;
             var actualResult = result.Value;
             Assert.IsType<OkObjectResult>(result);
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
             Assert.NotNull(result);
             }
+
+        //*************************Vote Controller Tests
+        [Fact]
+        public async Task GetVoteShouldReturnListofVote()
+            {
+            List<Vote> mockVote = new List<Vote>()
+                    {
+                    new Vote()
+                        {
+                        Id = 1,
+                        UserName = "Test1",
+                        Value = 0
+                        
+
+                        },
+                        new Vote()
+                        {
+                        Id = 2,
+                        UserName = "Testy",
+                        Value = -1
+                        }
+                    };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetVoteListAsync()).ReturnsAsync(mockVote);
+
+
+            VoteController service = new VoteController(mockBL.Object);
+            var result = await service.Get() as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(2, mockVote.Count);
+            }
+        [Fact]
+        public async Task GetVotebyIdShouldReturnVote()
+            {
+            Vote mockVote = new Vote()
+                        {
+                        Id = 1,
+                        UserName = "Test1",
+                        Value = 0
+                        };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetVoteByIdAsync(1)).ReturnsAsync(mockVote);
+
+
+            VoteController service = new VoteController(mockBL.Object);
+            var result = await service.Get(1) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(1, mockVote.Id);
+            Assert.Equal(mockVote, actualResult);
+
+            }
+        [Fact]
+        public async Task AddVoteShouldReturnVote()
+            {
+            Vote mockVote = new Vote()
+                {
+                Id = 1,
+                UserName = "Test1",
+                Value = 0
+                };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.AddVoteAsync(mockVote)).ReturnsAsync(mockVote);
+
+
+            VoteController service = new VoteController(mockBL.Object);
+            var result = await service.Post(mockVote) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<CreatedResult>(result);
+            Assert.Equal(HttpStatusCode.Created, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(mockVote, actualResult);
+
+            }
+
+        [Fact]
+        public async Task UpdateVoteShouldReturnVote()
+            {
+            Vote mockVote = new Vote()
+                {
+                Id = 1,
+                UserName = "Test1",
+                Value = 0
+                };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.UpdateVoteAsync(mockVote)).ReturnsAsync(mockVote);
+
+
+            VoteController service = new VoteController(mockBL.Object);
+            var result = await service.Put(mockVote) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.Equal(mockVote, actualResult);
+            }
+
+        [Fact]
+        public async Task DelteVoteShouldReturnOKandDelteVote()
+            {
+            Vote mockVote = new Vote()
+                {
+                Id = 1,
+                UserName = "Test1",
+                Value = 0
+                };
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.DeleteVoteAsync(1));
+
+
+            VoteController service = new VoteController(mockBL.Object);
+            var result = await service.Delete(1) as ObjectResult;
+            var actualResult = result.Value;
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+            Assert.NotNull(result);
+            }
+
         }
     }
     
