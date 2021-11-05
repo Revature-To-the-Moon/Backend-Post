@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DL.Migrations
 {
     [DbContext(typeof(PostDB))]
-    [Migration("20211104182541_initial")]
+    [Migration("20211105153844_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,10 @@ namespace DL.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RootId")
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RootId")
                         .HasColumnType("int");
 
                     b.Property<int>("TotalVote")
@@ -113,7 +116,9 @@ namespace DL.Migrations
 
                     b.HasOne("Models.Root", null)
                         .WithMany("Comments")
-                        .HasForeignKey("RootId");
+                        .HasForeignKey("RootId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Models.Vote", b =>

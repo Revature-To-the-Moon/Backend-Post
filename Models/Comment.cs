@@ -9,6 +9,8 @@ namespace Models
     public class Comment
     {
         public int Id { get; set; }
+        public int ParentId { get; set; }
+        public int RootId { get; set; }
         public string Message { get; set; }
         public int TotalVote { get; set; }
         public DateTime DateTime { get; set; }

@@ -35,7 +35,10 @@ namespace DL.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RootId")
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RootId")
                         .HasColumnType("int");
 
                     b.Property<int>("TotalVote")
@@ -111,7 +114,9 @@ namespace DL.Migrations
 
                     b.HasOne("Models.Root", null)
                         .WithMany("Comments")
-                        .HasForeignKey("RootId");
+                        .HasForeignKey("RootId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Models.Vote", b =>
