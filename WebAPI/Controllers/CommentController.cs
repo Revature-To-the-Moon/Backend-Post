@@ -65,9 +65,11 @@ namespace WebAPI.Controllers
 
         // DELETE api/<CommentController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            Comment deleteComment = await _bl.GetCommentByIdAsync(id);
             await _bl.DeleteCommentAsync(id);
+            return Ok(deleteComment);
         }
     }
 }
