@@ -22,7 +22,7 @@ namespace DL
 
         public async Task<List<Root>> GetRootListAsync()
         {
-            return await _context.Roots
+            List<Root> roots = await _context.Roots
                 .Include(r => r.Comments)
                 .Select(r => new Root()
                 {
@@ -33,9 +33,11 @@ namespace DL
                     TotalVote = r.TotalVote,
                     UserName = r.UserName,
 
-                    Comments = r.Comments.Select(a => new Comment()
+                    Comments = r.Comments.Where(r => r.ParentId == -1).Select(a => new Comment()
                     {
                         Id = a.Id,
+                        ParentId = a.ParentId,
+                        RootId = a.RootId,
                         DateTime = a.DateTime,
                         Message = a.Message,
                         TotalVote = a.TotalVote,
@@ -52,11 +54,22 @@ namespace DL
                     }).ToList(),
 
                 }).ToListAsync();
+
+            foreach (Root r in roots)
+            {
+                foreach(Comment com in r.Comments)
+                {
+                    com.Comments = await GetCommentChildAsync(com);
+                }
+            }
+
+            return roots;
         }
 
         public async Task<List<Comment>> GetCommentListAsync()
         {
-            return await _context.Comments
+            List<Comment> comment = await _context.Comments
+                .Where(r => r.ParentId == -1)
                 .Select(r => new Comment()
                 {
                     Id = r.Id,
@@ -72,8 +85,43 @@ namespace DL
                         Value = a.Value
 
                     }).ToList()
-
                 }).ToListAsync();
+
+            foreach(Comment com in comment)
+            {
+                com.Comments = await GetCommentChildAsync(com);
+            }
+
+            return comment;
+        }
+
+        public async Task<List<Comment>> GetCommentChildAsync(Comment comment)
+        {
+            List<Comment> comments = await _context.Comments
+                .Where(r => r.ParentId == comment.Id)
+                .Select(r => new Comment()
+                {
+                    Id = r.Id,
+                    DateTime = r.DateTime,
+                    Message = r.Message,
+                    TotalVote = r.TotalVote,
+                    UserName = r.UserName,
+
+                    Votes = r.Votes.Select(a => new Vote()
+                    {
+                        Id = a.Id,
+                        UserName = a.UserName,
+                        Value = a.Value
+
+                    }).ToList()
+                }).ToListAsync();
+
+            foreach (Comment com in comments)
+            {
+                com.Comments = await GetCommentChildAsync(com);
+            }
+
+            return comments;
         }
 
         public async Task<List<Vote>> GetVoteListAsync()
@@ -92,7 +140,7 @@ namespace DL
 
         public async Task<Root> GetRootByIdAsync(int id)
         {
-            return await _context.Roots
+            Root aRoot = await _context.Roots
                 .Include(r => r.Comments)
                 .AsNoTracking()
                 .Select(r => new Root()
@@ -104,9 +152,11 @@ namespace DL
                     TotalVote = r.TotalVote,
                     UserName = r.UserName,
 
-                    Comments = r.Comments.Select(a => new Comment()
+                    Comments = r.Comments.Where(r => r.ParentId == -1).Select(a => new Comment()
                     {
                         Id = a.Id,
+                        ParentId = a.ParentId,
+                        RootId = a.RootId,
                         DateTime = a.DateTime,
                         Message = a.Message,
                         TotalVote = a.TotalVote,
@@ -124,15 +174,24 @@ namespace DL
 
                 })
                 .FirstOrDefaultAsync(r => r.Id == id);
+
+            foreach (Comment com in aRoot.Comments)
+            {
+                com.Comments = await GetCommentChildAsync(com);
+            }
+
+            return aRoot;
         }
 
         public async Task<Comment> GetCommentByIdAsync(int id)
         {
-            return await _context.Comments
+            Comment aComment = await _context.Comments
                 .AsNoTracking()
                 .Select(r => new Comment()
                 {
                     Id = r.Id,
+                    ParentId = r.ParentId,
+                    RootId = r.RootId,
                     DateTime = r.DateTime,
                     Message = r.Message,
                     TotalVote = r.TotalVote,
@@ -147,6 +206,14 @@ namespace DL
                     }).ToList()
 
                 }).FirstOrDefaultAsync(r => r.Id == id);
+            if (aComment.Comments != null) 
+            {
+                foreach (Comment com in aComment.Comments)
+                {
+                    com.Comments = await GetCommentChildAsync(com);
+                }
+            }
+            return aComment;
         }
 
         public async Task<Vote> GetVoteByIdAsync(int id)
@@ -216,6 +283,8 @@ namespace DL
             return new Comment()
             {
                 Id = comment.Id,
+                ParentId = comment.ParentId,
+                RootId = comment.RootId,
                 DateTime = comment.DateTime,
                 Message = comment.Message,
                 TotalVote = comment.TotalVote,
