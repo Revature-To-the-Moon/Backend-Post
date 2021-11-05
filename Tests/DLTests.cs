@@ -67,6 +67,8 @@ namespace Tests
                         new Comment()
                         {
                             Id = 10,
+                            ParentId = -1,
+                            RootId = 1,
                             Message = "comment to somthing",
                             TotalVote = 123,
                             DateTime = new DateTime(2021, 1, 1, 1, 1, 1),
@@ -75,6 +77,8 @@ namespace Tests
                         new Comment()
                         {
                             Id = 11,
+                            ParentId = -1,
+                            RootId = 1,
                             Message = "another comment to somthing",
                             TotalVote = 321,
                             DateTime = new DateTime(2021, 1, 1, 1, 1, 1),
@@ -83,12 +87,14 @@ namespace Tests
                         new Comment()
                         {
                             Id = 12,
+                            ParentId = 11,
+                            RootId = 1,
                             Message = "and another one comment to somthing",
                             TotalVote = -123,
                             DateTime = new DateTime(2021, 1, 1, 1, 1, 1),
                             UserName = "wowSomeGuy"
                         }
-                    });
+                    }) ;
 
                 context.Votes.AddRange(
                     new List<Vote>()
@@ -157,6 +163,8 @@ namespace Tests
                 Comment commentToAdd = new Comment()
                 {
                     Id = 1001,
+                    ParentId = 11,
+                    RootId = 1,
                     Message = "add a testing message",
                     TotalVote = 1,
                     DateTime = new DateTime(2021, 1, 1, 1, 1, 1),
@@ -171,6 +179,8 @@ namespace Tests
                 Comment comment = context.Comments.FirstOrDefault(u => u.Id == 1001);
 
                 Assert.NotNull(comment);
+                Assert.Equal(11, comment.ParentId);
+                Assert.Equal(1, comment.RootId);
                 Assert.Equal("add a testing message", comment.Message);
                 Assert.Equal(1, comment.TotalVote);
                 Assert.Equal(new DateTime(2021, 1, 1, 1, 1, 1), comment.DateTime);
@@ -228,7 +238,7 @@ namespace Tests
                 var comments = await repo.GetCommentListAsync();
 
                 Assert.NotNull(comments);
-                Assert.Equal(3, comments.Count);
+                Assert.Equal(2, comments.Count);
             }
         }
 

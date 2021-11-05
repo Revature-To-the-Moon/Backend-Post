@@ -30,12 +30,13 @@ namespace DL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ParentId = table.Column<int>(type: "int", nullable: false),
+                    RootId = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TotalVote = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CommentId = table.Column<int>(type: "int", nullable: true),
-                    RootId = table.Column<int>(type: "int", nullable: true)
+                    CommentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,7 +52,7 @@ namespace DL.Migrations
                         column: x => x.RootId,
                         principalTable: "Roots",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
