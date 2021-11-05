@@ -73,6 +73,8 @@ namespace DL
                 .Select(r => new Comment()
                 {
                     Id = r.Id,
+                    ParentId = r.ParentId,
+                    RootId = r.RootId,
                     DateTime = r.DateTime,
                     Message = r.Message,
                     TotalVote = r.TotalVote,
@@ -103,6 +105,8 @@ namespace DL
                 .Select(r => new Comment()
                 {
                     Id = r.Id,
+                    ParentId = r.ParentId,
+                    RootId = r.RootId,
                     DateTime = r.DateTime,
                     Message = r.Message,
                     TotalVote = r.TotalVote,
