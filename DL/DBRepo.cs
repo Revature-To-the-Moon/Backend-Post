@@ -82,7 +82,8 @@ namespace DL
                     {
                         Id = a.Id,
                         UserName = a.UserName,
-                        Value = a.Value
+                        Value = a.Value,
+                        CommentId = a.CommentId
 
                     }).ToList()
                 }).ToListAsync();
@@ -111,7 +112,8 @@ namespace DL
                     {
                         Id = a.Id,
                         UserName = a.UserName,
-                        Value = a.Value
+                        Value = a.Value,
+                        CommentId = a.CommentId
 
                     }).ToList()
                 }).ToListAsync();
@@ -131,7 +133,8 @@ namespace DL
                 {
                     Id = r.Id,
                     UserName = r.UserName,
-                    Value = r.Value
+                    Value = r.Value,
+                    CommentId = r.CommentId
 
                 }).ToListAsync();
         }
@@ -166,7 +169,8 @@ namespace DL
                         {
                             Id = b.Id,
                             UserName = b.UserName,
-                            Value = b.Value
+                            Value = b.Value,
+                            CommentId = b.CommentId
 
                         }).ToList()
 
@@ -201,7 +205,8 @@ namespace DL
                     {
                         Id = a.Id,
                         UserName = a.UserName,
-                        Value = a.Value
+                        Value = a.Value,
+                        CommentId = a.CommentId
 
                     }).ToList()
 
@@ -224,7 +229,8 @@ namespace DL
                 {
                     Id = r.Id,
                     UserName = r.UserName,
-                    Value = r.Value
+                    Value = r.Value,
+                    CommentId = r.CommentId
 
                 }).FirstOrDefaultAsync(r => r.Id == id);
         }
@@ -303,7 +309,8 @@ namespace DL
             {
                 Id = vote.Id,
                 UserName = vote.UserName,
-                Value = vote.Value
+                Value = vote.Value,
+                CommentId = vote.CommentId
             };
         }
 

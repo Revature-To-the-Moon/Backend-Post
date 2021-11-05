@@ -103,19 +103,22 @@ namespace Tests
                         {
                             Id = 100,
                             UserName = "guyorgirl1",
-                            Value = 1
+                            Value = 1,
+                            CommentId = 10
                         },
                         new Vote()
                         {
                             Id = 101,
                             UserName = "guyorgirl2",
-                            Value = 1
+                            Value = 1,
+                            CommentId = 10
                         },
                         new Vote()
                         {
                             Id = 102,
                             UserName = "guyorgirl3",
-                            Value = -1
+                            Value = -1,
+                            CommentId = 10
                         }
                     });
                 context.SaveChanges();
@@ -198,7 +201,8 @@ namespace Tests
                 {
                     Id = 1002,
                     Value = 1,
-                    UserName = "addtestuser"
+                    UserName = "addtestuser",
+                    CommentId = 10
                 };
 
                 repo.AddVoteAsync(voteToAdd);
@@ -211,6 +215,7 @@ namespace Tests
                 Assert.NotNull(vote);
                 Assert.Equal(1, vote.Value);
                 Assert.Equal("addtestuser", vote.UserName);
+                Assert.Equal(10, vote.CommentId);
             }
         }
 
