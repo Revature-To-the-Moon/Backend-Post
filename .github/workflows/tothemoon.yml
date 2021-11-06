@@ -12,11 +12,15 @@ spec:
       labels:
         app: tothemoon
     spec:
+      nodeSelector:
+          "kubernetes.io/os": linux
+      terminationGracePeriodSeconds: 30
       containers:
       - name: tothemoon
-        image: tristanpostley/tothemoon
+        image: tristanpostley/tothemoon-post:3
+        imagePullPolicy: "Always"
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         resources:
           requests:
             cpu: 250m
@@ -29,9 +33,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tothemoon
+  name: tothemoon-post
 spec:
+  type: LoadBalancer
   ports:
-  - port: 6379
+  - port: 3000
   selector:
-    app: tothemoon
+    app: tothemoon-post
