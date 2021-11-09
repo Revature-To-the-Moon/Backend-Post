@@ -125,6 +125,8 @@ namespace Tests
             }
         }
 
+        //**********************Add Tests*************************
+
         [Fact]
         public void AddingRootShouldAddRoot()
         {
@@ -219,6 +221,8 @@ namespace Tests
             }
         }
 
+        //*********************Get Tests*********************
+
         [Fact]
         public async void GetAllRootsShouldGetAllRoots()
         {
@@ -260,6 +264,8 @@ namespace Tests
                 Assert.Equal(3, votes.Count);
             }
         }
+
+        //**********************************Update Tests********************************
 
         [Fact]
         public async void UpdatingRootShouldUpdate()

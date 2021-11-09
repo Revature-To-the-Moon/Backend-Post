@@ -249,7 +249,7 @@ namespace Tests
             Assert.NotNull(result);
             }
 
-        //*************************Vote Controller Tests
+        //*************************[Vote Controller Tests]***********************************
         [Fact]
         public async Task GetVoteShouldReturnListofVote()
             {
@@ -281,6 +281,7 @@ namespace Tests
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
             Assert.Equal(2, mockVote.Count);
             }
+
         [Fact]
         public async Task GetVotebyIdShouldReturnVote()
             {
@@ -368,82 +369,148 @@ namespace Tests
             }
 
 
-            //***************[Comment Controller Tests]********************
-            [Fact]
-            public async Task AddCommentShouldReturnComment()
+        //**********************[Comment Controller Tests]***************************
+        [Fact]
+        public async Task GetCommentsShouldReturnListOfComments()
+        {
+            List<Comment> mockComment = new List<Comment>()
             {
-            Comment mockComment = new Comment()
-            {
-                Id = 1,
-                Message = "A generic Message",
-                TotalVote = 1,
-                Comments = null,
-                DateTime = DateTime.Now,
-                UserName = "TestUser",
-                Votes = null
+                new Comment()
+                {
+                    Id = 1,
+                    Message = "A generic Message",
+                    TotalVote = 1,
+                    Comments = null,
+                    DateTime = DateTime.Now,
+                    UserName = "TestUser",
+                    Votes = null
+
+                },
+                new Comment()
+                {
+                    Id = 2,
+                    Message = "Another generic Message",
+                    TotalVote = 2,
+                    Comments = null,
+                    DateTime = DateTime.Now,
+                    UserName = "TestUserTwo",
+                    Votes = null
+                }
+
             };
             var mockBL = new Mock<IBL>();
-            mockBL.Setup(x => x.AddCommentAsync(mockComment)).ReturnsAsync(mockComment);
-
-
-            CommentController service = new CommentController(mockBL.Object);
-            var result = await service.Post(mockComment) as ObjectResult;
-            var actualResult = result.Value;
-            Assert.IsType<CreatedResult>(result);
-            Assert.Equal(HttpStatusCode.Created, (HttpStatusCode)result.StatusCode);
-            Assert.Equal(mockComment, actualResult);
-            }
-
-            [Fact]
-            public async Task UpdateCommentShouldReturnComment()
-            {
-            Comment mockComment = new Comment()
-            {
-                Id = 1,
-                Message = "A generic Message",
-                TotalVote = 1,
-                Comments = null,
-                DateTime = DateTime.Now,
-                UserName = "TestUser",
-                Votes = null
-            };
-            var mockBL = new Mock<IBL>();
-            mockBL.Setup(x => x.UpdateCommentAsync(mockComment)).ReturnsAsync(mockComment);
-
+            mockBL.Setup(x => x.GetCommentListAsync()).ReturnsAsync(mockComment);
 
             CommentController service = new CommentController(mockBL.Object);
-            var result = await service.Put(mockComment) as ObjectResult;
+            var result = await service.Get() as ObjectResult;
             var actualResult = result.Value;
             Assert.IsType<OkObjectResult>(result);
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
-            Assert.Equal(mockComment, actualResult);
-            }
-            
-            [Fact]
-            public async Task DeleteCommentShouldReturnOkAndDeleteComment()
-            {
-            Comment mockComment = new Comment()
-            {
-                Id = 1,
-                Message = "A generic Message",
-                TotalVote = 1,
-                Comments = null,
-                DateTime = DateTime.Now,
-                UserName = "TestUser",
-                Votes = null
-            };
-            var mockBL = new Mock<IBL>();
-            mockBL.Setup(x => x.DeleteCommentAsync(mockComment.Id));
+            Assert.Equal(2, mockComment.Count);
 
-            CommentController service = new CommentController(mockBL.Object);
+        }
+
+        [Fact]
+        public async Task AddCommentShouldReturnComment()
+        {
+        Comment mockComment = new Comment()
+        {
+            Id = 1,
+            Message = "A generic Message",
+            TotalVote = 1,
+            Comments = null,
+            DateTime = DateTime.Now,
+            UserName = "TestUser",
+            Votes = null
+        };
+        var mockBL = new Mock<IBL>();
+        mockBL.Setup(x => x.AddCommentAsync(mockComment)).ReturnsAsync(mockComment);
+
+
+        CommentController service = new CommentController(mockBL.Object);
+        var result = await service.Post(mockComment) as ObjectResult;
+        var actualResult = result.Value;
+        Assert.IsType<CreatedResult>(result);
+        Assert.Equal(HttpStatusCode.Created, (HttpStatusCode)result.StatusCode);
+        Assert.Equal(mockComment, actualResult);
+        }
+
             
-            var result = await service.Delete(mockComment.Id) as ObjectResult;
-            var actualResult = result.Value;
+        [Fact]
+        public async Task GetCommentByIdShouldReturnComment()
+        {
+        Comment mockComment = new Comment()
+        {
+            Id = 1,
+            Message = "A generic Message",
+            TotalVote = 1,
+            Comments = null,
+            DateTime = DateTime.Now,
+            UserName = "TestUser",
+            Votes = null
+        };
+        var  mockBL = new Mock<IBL>();
+        mockBL.Setup(x => x.GetCommentByIdAsync(mockComment.Id)).ReturnsAsync(mockComment);
+
+        CommentController service = new CommentController(mockBL.Object);
+        var result = await service.Get(mockComment.Id) as ObjectResult;
+        var actualResult = result.Value;
+        Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+        Assert.Equal(mockComment, actualResult);
+        }
+
+        [Fact]
+        public async Task UpdateCommentShouldReturnComment()
+        {
+        Comment mockComment = new Comment()
+        {
+            Id = 1,
+            Message = "A generic Message",
+            TotalVote = 1,
+            Comments = null,
+            DateTime = DateTime.Now,
+            UserName = "TestUser",
+            Votes = null
+        };
+        var mockBL = new Mock<IBL>();
+        mockBL.Setup(x => x.UpdateCommentAsync(mockComment)).ReturnsAsync(mockComment);
+
+
+        CommentController service = new CommentController(mockBL.Object);
+        var result = await service.Put(mockComment) as ObjectResult;
+        var actualResult = result.Value;
+        Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+        Assert.Equal(mockComment, actualResult);
+        }
             
-            Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
-            Assert.NotNull(result);
-            }
+        [Fact]
+        public async Task DeleteCommentShouldReturnOkAndDeleteComment()
+        {
+        Comment mockComment = new Comment()
+        {
+            Id = 1,
+            Message = "A generic Message",
+            TotalVote = 1,
+            Comments = null,
+            DateTime = DateTime.Now,
+            UserName = "TestUser",
+            Votes = null
+        };
+        var mockBL = new Mock<IBL>();
+        mockBL.Setup(x => x.DeleteCommentAsync(mockComment.Id));
+
+        CommentController service = new CommentController(mockBL.Object);
+            
+        var result = await service.Delete(mockComment.Id) as ObjectResult;
+        var actualResult = result.Value;
+            
+        Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
+        Assert.NotNull(result);
+        }
+
 
         }
     }
