@@ -74,6 +74,19 @@ namespace Tests
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
             Assert.Equal(2, mockRoot.Count);
             }
+            [Fact]
+        public async Task GetPostNullShouldReturnNull()
+            {
+            List<Root> mockRoot = null;
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetRootListAsync()).ReturnsAsync(mockRoot);
+
+
+            PostController service = new PostController(mockBL.Object);
+            var result = await service.Get() as ObjectResult;
+            
+            Assert.Null(result);
+            }
         [Fact]
         public async Task GetPostbyIdShouldReturnRoot()
             {
@@ -111,6 +124,7 @@ namespace Tests
 
             PostController service = new PostController(mockBL.Object);
             var result = await service.Get(1) as ObjectResult;
+            var noresult = await service.Get(-1) as ObjectResult;
             var actualResult = result.Value;
             Assert.IsType<OkObjectResult>(result);
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
@@ -118,7 +132,7 @@ namespace Tests
             Assert.Equal("Test1", mockRoot.Title);
             Assert.Single(mockRoot.Comments);
             Assert.Equal(mockRoot, actualResult);
-           
+            Assert.Null(noresult);
             }
         [Fact]
         public async Task AddRootShouldReturnRoot()
@@ -161,7 +175,6 @@ namespace Tests
             Assert.IsType<CreatedResult>(result);
             Assert.Equal(HttpStatusCode.Created, (HttpStatusCode)result.StatusCode);
             Assert.Equal(mockRoot, actualResult);
-           
 
             }
         [Fact]
@@ -282,6 +295,19 @@ namespace Tests
             Assert.Equal(2, mockVote.Count);
             }
 
+            [Fact]
+        public async Task GetVoteNullShouldReturnNull()
+            {
+            List<Vote> mockVote = null;
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetVoteListAsync()).ReturnsAsync(mockVote);
+
+
+            VoteController service = new VoteController(mockBL.Object);
+            var result = await service.Get() as ObjectResult;
+            Assert.Null(result);
+            }
+
         [Fact]
         public async Task GetVotebyIdShouldReturnVote()
             {
@@ -297,11 +323,13 @@ namespace Tests
 
             VoteController service = new VoteController(mockBL.Object);
             var result = await service.Get(1) as ObjectResult;
+            var noresult = await service.Get(-1) as ObjectResult;
             var actualResult = result.Value;
             Assert.IsType<OkObjectResult>(result);
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
             Assert.Equal(1, mockVote.Id);
             Assert.Equal(mockVote, actualResult);
+            Assert.Null(noresult);
 
             }
         [Fact]
@@ -411,6 +439,19 @@ namespace Tests
         }
 
         [Fact]
+        public async Task GetCommentsNullShouldReturnNull()
+        {
+            List<Comment> mockComment = null;
+            var mockBL = new Mock<IBL>();
+            mockBL.Setup(x => x.GetCommentListAsync()).ReturnsAsync(mockComment);
+
+            CommentController service = new CommentController(mockBL.Object);
+            var result = await service.Get() as ObjectResult;
+            Assert.Null(result);
+
+        }
+
+        [Fact]
         public async Task AddCommentShouldReturnComment()
         {
         Comment mockComment = new Comment()
@@ -454,10 +495,12 @@ namespace Tests
 
         CommentController service = new CommentController(mockBL.Object);
         var result = await service.Get(mockComment.Id) as ObjectResult;
+        var noresult = await service.Get(-1) as ObjectResult;
         var actualResult = result.Value;
         Assert.IsType<OkObjectResult>(result);
         Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
         Assert.Equal(mockComment, actualResult);
+        Assert.Null(noresult);
         }
 
         [Fact]

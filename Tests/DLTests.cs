@@ -220,6 +220,13 @@ namespace Tests
                 Assert.Equal(10, vote.CommentId);
             }
         }
+        //testing default constructor
+        [Fact]
+        public void PostDBShouldCreate()
+        {
+            PostDB test = new PostDB();
+            Assert.NotNull(test);
+        }
 
         //*********************Get Tests*********************
 
