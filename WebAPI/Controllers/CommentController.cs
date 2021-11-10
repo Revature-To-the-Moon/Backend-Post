@@ -23,9 +23,17 @@ namespace WebAPI.Controllers
 
         // GET: api/<CommentController>
         [HttpGet]
-        public async Task<IEnumerable<Comment>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await _bl.GetCommentListAsync();
+            List<Comment> commentList = await _bl.GetCommentListAsync();
+            if (commentList != null)
+            {
+                return Ok(commentList);
+            }
+            else
+            {
+                return NoContent();
+            }
         }
 
 
