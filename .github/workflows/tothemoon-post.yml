@@ -6,7 +6,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tothemoon-post-post
+      app: tothemoon-post
   template:
     metadata:
       labels:
