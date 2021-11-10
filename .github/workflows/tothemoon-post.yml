@@ -1,26 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tothemoon
+  name: tothemoon-post
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tothemoon
+      app: tothemoon-post-post
   template:
     metadata:
       labels:
-        app: tothemoon
+        app: tothemoon-post
     spec:
-      nodeSelector:
-          "kubernetes.io/os": linux
       terminationGracePeriodSeconds: 30
       containers:
       - name: tothemoon
-        image: tristanpostley/tothemoon-post:3
+        image: tristanpostley/tothemoon-post:${{github.run_number}}
         imagePullPolicy: "Always"
         ports:
-        - containerPort: 3000
+        - containerPort: 80
         resources:
           requests:
             cpu: 250m
