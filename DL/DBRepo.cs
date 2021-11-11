@@ -215,13 +215,7 @@ namespace DL
                     }).ToList()
 
                 }).FirstOrDefaultAsync(r => r.Id == id);
-            if (aComment.Comments != null) 
-            {
-                foreach (Comment com in aComment.Comments)
-                {
-                    com.Comments = await GetCommentChildAsync(com);
-                }
-            }
+            aComment.Comments = await GetCommentChildAsync(aComment);
             return aComment;
         }
 
@@ -270,7 +264,7 @@ namespace DL
             }
             Comment com = await GetCommentByIdAsync(vote.CommentId);
             Root root = await GetRootByIdAsync(com.RootId);
-            await UpdateTotalvote(com, positive);
+
             if (positive)
             {
                 root.TotalVote++;
@@ -279,10 +273,11 @@ namespace DL
             {
                 root.TotalVote--;
             }
-
             _context.Roots.Update(root);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
+
+            await UpdateTotalvote(com, positive);
 
             return vote;
         }
@@ -339,8 +334,7 @@ namespace DL
             }
             Comment com = await GetCommentByIdAsync(vote.CommentId);
             Root root = await GetRootByIdAsync(com.RootId);
-            await UpdateTotalvote(com, positive);
-            await UpdateTotalvote(com, positive);
+            
             if (positive)
             {
                 root.TotalVote = root.TotalVote+2;
@@ -353,6 +347,10 @@ namespace DL
             _context.Roots.Update(root);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
+
+            await UpdateTotalvote(com, positive);
+            await UpdateTotalvote(com, positive);
+
 
             return new Vote()
             {
@@ -394,7 +392,7 @@ namespace DL
             }
             Comment com = await GetCommentByIdAsync(vote.CommentId);
             Root root = await GetRootByIdAsync(com.RootId);
-            await UpdateTotalvote(com, positive);
+            
             if (positive)
             {
                 root.TotalVote++;
@@ -407,6 +405,8 @@ namespace DL
             _context.Roots.Update(root);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
+
+            await UpdateTotalvote(com, positive);
         }
 
 
@@ -419,7 +419,7 @@ namespace DL
         /// <param name="comment"></param>
         /// <param name="positive"></param>
         /// <returns></returns>
-        public async Task<Comment> UpdateTotalvote(Comment comment, bool positive)
+        public async Task UpdateTotalvote(Comment comment, bool positive)
         {
             if (positive)
             {
@@ -430,7 +430,13 @@ namespace DL
                 comment.TotalVote--;
             }
 
-            await UpdateCommentAsync(comment);
+            _context.Comments.Update(comment);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
+            System.Diagnostics.Debug.WriteLine(_context.ChangeTracker.DebugView.LongView);
+            
+            
 
             if (comment.ParentId != -1)
             {
@@ -438,7 +444,6 @@ namespace DL
                 await UpdateTotalvote(temp, positive);
             }
 
-            return comment;
         }
     }
 
