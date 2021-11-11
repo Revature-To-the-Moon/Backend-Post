@@ -220,6 +220,35 @@ namespace Tests
                 Assert.Equal(10, vote.CommentId);
             }
         }
+
+        [Fact]
+        public void NegativeAddingVoteShouldAddVote()
+        {
+            using (var context = new PostDB(options))
+            {
+                IRepo repo = new DBRepo(context);
+                Vote voteToAdd = new Vote()
+                {
+                    Id = 1002,
+                    Value = -1,
+                    UserName = "addtestuser",
+                    CommentId = 10
+                };
+
+                repo.AddVoteAsync(voteToAdd);
+            }
+
+            using (var context = new PostDB(options))
+            {
+                Vote vote = context.Votes.FirstOrDefault(u => u.Id == 1002);
+
+                Assert.NotNull(vote);
+                Assert.Equal(-1, vote.Value);
+                Assert.Equal("addtestuser", vote.UserName);
+                Assert.Equal(10, vote.CommentId);
+            }
+        }
+
         //testing default constructor
         [Fact]
         public void PostDBShouldCreate()
@@ -347,6 +376,32 @@ namespace Tests
                 Assert.Equal(42, vote.Value);
             }
         }
+
+        [Fact]
+        public async void NegativeUpdatingVoteShouldUpdate()
+        {
+            using (var context = new PostDB(options))
+            {
+
+                IRepo repo = new DBRepo(context);
+                Vote voteToUpdate = await repo.GetVoteByIdAsync(100);
+
+                voteToUpdate.Value = -1;
+
+
+                await repo.UpdateVoteAsync(voteToUpdate);
+            }
+
+            using (var context = new PostDB(options))
+            {
+                Vote vote = context.Votes.FirstOrDefault(e => e.Id == 100);
+
+                Assert.NotNull(vote);
+                Assert.Equal(-1, vote.Value);
+            }
+        }
+
+       
     }
 }
 

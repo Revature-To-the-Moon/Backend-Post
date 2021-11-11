@@ -361,6 +361,41 @@ namespace DL
             };
         }
 
+        /// <summary>
+        /// recursion for changing totalvotes when vote is added
+        /// if positive is true will add 1 to the total value of a comment
+        /// and then call the method again with the parent comment if there is one
+        /// </summary>
+        /// <param name="comment"></param>
+        /// <param name="positive"></param>
+        /// <returns></returns>
+        public async Task UpdateTotalvote(Comment comment, bool positive)
+        {
+            if (positive)
+            {
+                comment.TotalVote++;
+            }
+            else
+            {
+                comment.TotalVote--;
+            }
+
+            _context.Comments.Update(comment);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
+            System.Diagnostics.Debug.WriteLine(_context.ChangeTracker.DebugView.LongView);
+            
+            
+
+            if (comment.ParentId != -1)
+            {
+                Comment temp = await GetCommentByIdAsync(comment.ParentId);
+                await UpdateTotalvote(temp, positive);
+            }
+
+        }
+
         //------------------------------------Methods for Deleting From DB---------------------------------
 
         public async Task DeleteRootAsync(int id)
@@ -411,40 +446,7 @@ namespace DL
 
 
 
-        /// <summary>
-        /// recursion for changing totalvotes when vote is added
-        /// if positive is true will add 1 to the total value of a comment
-        /// and then call the method again with the parent comment if there is one
-        /// </summary>
-        /// <param name="comment"></param>
-        /// <param name="positive"></param>
-        /// <returns></returns>
-        public async Task UpdateTotalvote(Comment comment, bool positive)
-        {
-            if (positive)
-            {
-                comment.TotalVote++;
-            }
-            else
-            {
-                comment.TotalVote--;
-            }
-
-            _context.Comments.Update(comment);
-            await _context.SaveChangesAsync();
-            _context.ChangeTracker.Clear();
-
-            System.Diagnostics.Debug.WriteLine(_context.ChangeTracker.DebugView.LongView);
-            
-            
-
-            if (comment.ParentId != -1)
-            {
-                Comment temp = await GetCommentByIdAsync(comment.ParentId);
-                await UpdateTotalvote(temp, positive);
-            }
-
-        }
+        
     }
 
 }
