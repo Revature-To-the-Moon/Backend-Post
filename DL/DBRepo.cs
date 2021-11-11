@@ -262,8 +262,31 @@ namespace DL
             await _context.AddAsync(vote);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
+
+            bool positive = true;
+            if (vote.Value == -1)
+            {
+                positive = false;
+            }
+            Comment com = await GetCommentByIdAsync(vote.CommentId);
+            Root root = await GetRootByIdAsync(com.RootId);
+            await UpdateTotalvote(com, positive);
+            if (positive)
+            {
+                root.TotalVote++;
+            }
+            else
+            {
+                root.TotalVote--;
+            }
+
+            _context.Roots.Update(root);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
             return vote;
         }
+        
 
         //------------------------------------Methods for Updating DB--------------------------------------
 
@@ -309,6 +332,28 @@ namespace DL
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
 
+            bool positive = true;
+            if (vote.Value == -1)
+            {
+                positive = false;
+            }
+            Comment com = await GetCommentByIdAsync(vote.CommentId);
+            Root root = await GetRootByIdAsync(com.RootId);
+            await UpdateTotalvote(com, positive);
+            await UpdateTotalvote(com, positive);
+            if (positive)
+            {
+                root.TotalVote = root.TotalVote+2;
+            }
+            else
+            {
+                root.TotalVote = root.TotalVote-2;
+            }
+
+            _context.Roots.Update(root);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
             return new Vote()
             {
                 Id = vote.Id,
@@ -336,9 +381,68 @@ namespace DL
 
         public async Task DeleteVoteAsync(int id)
         {
-            _context.Votes.Remove(await GetVoteByIdAsync(id));
+            Vote vote = await GetVoteByIdAsync(id);
+            _context.Votes.Remove(vote);
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
+            // switched if statement because we are deleting and need to remove the value
+            bool positive = true;
+            if (vote.Value == 1)
+            {
+                positive = false;
+            }
+            Comment com = await GetCommentByIdAsync(vote.CommentId);
+            Root root = await GetRootByIdAsync(com.RootId);
+            await UpdateTotalvote(com, positive);
+            if (positive)
+            {
+                root.TotalVote++;
+            }
+            else
+            {
+                root.TotalVote--;
+            }
+
+            _context.Roots.Update(root);
             await _context.SaveChangesAsync();
             _context.ChangeTracker.Clear();
         }
+
+
+
+        /// <summary>
+        /// recursion for changing totalvotes when vote is added
+        /// if positive is true will add 1 to the total value of a comment
+        /// and then call the method again with the parent comment if there is one
+        /// </summary>
+        /// <param name="comment"></param>
+        /// <param name="positive"></param>
+        /// <returns></returns>
+        public async Task<Comment> UpdateTotalvote(Comment comment, bool positive)
+        {
+            if (positive)
+            {
+                comment.TotalVote++;
+            }
+            else
+            {
+                comment.TotalVote--;
+            }
+
+            await UpdateCommentAsync(comment);
+
+            if (comment.ParentId != -1)
+            {
+                Comment temp = await GetCommentByIdAsync(comment.ParentId);
+                await UpdateTotalvote(temp, positive);
+            }
+
+            return comment;
+        }
     }
+
 }
+
+
+
