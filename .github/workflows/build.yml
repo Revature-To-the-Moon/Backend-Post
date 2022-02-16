@@ -2,10 +2,10 @@ name: Build
 on:
   pull_request:
     branches:
-      - merge
+      - main
   push:
     branches:
-      - merge
+      - main
 jobs:
   build:
     name: Build
