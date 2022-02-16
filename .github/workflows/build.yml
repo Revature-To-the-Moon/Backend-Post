@@ -48,7 +48,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Revature-To-the-Moon_P3-Backend-Post" /o:"revature-to-the-moon" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/*.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Revature-Cadmus-2_P3-Backend-Post" /o:"revature-cadmus-2" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/*.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
           dotnet build ${{ env.WORKING_DIRECTORY }} --configuration Release
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
