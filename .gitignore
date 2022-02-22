@@ -6,8 +6,8 @@ connectionString.txt
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-.appsetting.Development.json
-.appsetting.json
+.appsettings.Development.json
+.appsettings.json
 
 # User-specific files
 *.rsuser
