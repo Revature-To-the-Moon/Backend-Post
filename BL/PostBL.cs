@@ -8,11 +8,11 @@ using DL;
 
 namespace BL
 {
-    public class PostBl : IBL
+    public class PostBL : IBL
     {
         readonly private IRepo _repo;
 
-        public PostBl(IRepo repo)
+        public PostBL(IRepo repo)
         {
             _repo = repo;
         }
