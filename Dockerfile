@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY Post.sln ./
 COPY /BL/*.csproj ./BL/
@@ -39,4 +39,4 @@ WORKDIR /app
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "WebAPI.dll"]
 
-EXPOSE 3000
+EXPOSE 80
