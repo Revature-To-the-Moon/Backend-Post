@@ -21,9 +21,11 @@ namespace Models
         //[No Group has 0 or null Id]
         public int GroupPostId { get; set; } //Community/Group daily stories
 
-        public Root (int GroupPostId)
-        {
-            this.GroupPostId = 0;
-        } 
+        // public Root () {}
+
+        // public Root (int GroupPostId)
+        // {
+        //     this.GroupPostId = 0;
+        // } 
     }
 }

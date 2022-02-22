@@ -17,3 +17,8 @@ namespace DL
         public DbSet<Vote> Votes { get; set; }
     }
 }
+
+
+//After every change to models Last ran initMig3
+//dotnet ef migrations add AddedFieldToRootGroupId -c PostDB --startup-project ../WebAPI
+//dotnet ef database update --startup-project ../WebAPI
