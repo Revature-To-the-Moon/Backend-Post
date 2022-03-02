@@ -32,6 +32,7 @@ namespace DL
                     Title = r.Title,
                     TotalVote = r.TotalVote,
                     UserName = r.UserName,
+                    GroupPostId = r.GroupPostId,
 
                     Comments = r.Comments.Where(r => r.ParentId == -1).Select(a => new Comment()
                     {
@@ -52,6 +53,55 @@ namespace DL
                         }).ToList()
 
                     }).ToList(),
+
+
+                }).ToListAsync();
+
+            foreach (Root r in roots)
+            {
+                foreach(Comment com in r.Comments)
+                {
+                    com.Comments = await GetCommentChildAsync(com);
+                }
+            }
+
+            return roots;
+        }
+        public async Task<List<Root>> GetRootListByGroupIdAsync(int groupPostID)
+        {
+            List<Root> roots = await _context.Roots
+                .Where(r => r.GroupPostId == groupPostID)
+                .Include(r => r.Comments)
+                .Select(r => new Root()
+                {
+                    Id = r.Id,
+                    DateTime = r.DateTime,
+                    Message = r.Message,
+                    Title = r.Title,
+                    TotalVote = r.TotalVote,
+                    UserName = r.UserName,
+                    GroupPostId = r.GroupPostId,
+
+                    Comments = r.Comments.Where(r => r.ParentId == -1).Select(a => new Comment()
+                    {
+                        Id = a.Id,
+                        ParentId = a.ParentId,
+                        RootId = a.RootId,
+                        DateTime = a.DateTime,
+                        Message = a.Message,
+                        TotalVote = a.TotalVote,
+                        UserName = a.UserName,
+
+                        Votes = a.Votes.Select(b => new Vote()
+                        {
+                            Id = b.Id,
+                            UserName = b.UserName,
+                            Value = b.Value
+
+                        }).ToList()
+
+                    }).ToList(),
+
 
                 }).ToListAsync();
 
@@ -158,6 +208,7 @@ namespace DL
                     Title = r.Title,
                     TotalVote = r.TotalVote,
                     UserName = r.UserName,
+                    GroupPostId = r.GroupPostId,
 
                     Comments = r.Comments.Where(r => r.ParentId == -1).Select(a => new Comment()
                     {
@@ -298,7 +349,8 @@ namespace DL
                 Message = root.Message,
                 Title = root.Title,
                 TotalVote = root.TotalVote,
-                UserName = root.UserName
+                UserName = root.UserName,
+                GroupPostId = root.GroupPostId
             };
         }
 

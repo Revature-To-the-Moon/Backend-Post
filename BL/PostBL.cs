@@ -8,11 +8,11 @@ using DL;
 
 namespace BL
 {
-    public class PostBl : IBL
+    public class PostBL : IBL
     {
         readonly private IRepo _repo;
 
-        public PostBl(IRepo repo)
+        public PostBL(IRepo repo)
         {
             _repo = repo;
         }
@@ -22,6 +22,10 @@ namespace BL
         public async Task<List<Root>> GetRootListAsync()
         {
             return await _repo.GetRootListAsync();
+        }
+
+        public async Task<List<Root>> GetRootListByGroupIdAsync(int groupPostID){
+            return await _repo.GetRootListByGroupIdAsync(groupPostID);
         }
 
         public async Task<List<Comment>> GetCommentListAsync()

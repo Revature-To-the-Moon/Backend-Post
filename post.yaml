@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-deployment
+  namespace: apollo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post-deployment
+  template:
+    metadata:
+      labels:
+        app: post-deployment
+    spec:
+      containers:
+      - name: post-deployment
+        image: joninfante/post:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-service
+  namespace: apollo
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: post-deployment
+
