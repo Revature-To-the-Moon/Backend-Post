@@ -24,6 +24,10 @@ namespace BL
             return await _repo.GetRootListAsync();
         }
 
+        public async Task<List<Root>> GetRootListByGroupIdAsync(int groupPostID){
+            return await _repo.GetRootListByGroupIdAsync(groupPostID);
+        }
+
         public async Task<List<Comment>> GetCommentListAsync()
         {
             return await _repo.GetCommentListAsync();

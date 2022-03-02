@@ -14,6 +14,8 @@ namespace BL
 
         Task<List<Root>> GetRootListAsync();
 
+        Task<List<Root>> GetRootListByGroupIdAsync(int groupPostID);
+
         Task<List<Comment>> GetCommentListAsync();
 
         Task<List<Vote>> GetVoteListAsync();

@@ -39,6 +39,21 @@ namespace WebAPI.Controllers
                 }
             }
 
+                    // GET: api/<PostController>
+        [HttpGet("Group/{id}")]
+        public async Task<IActionResult> GetGroupPosts(int id)
+        {
+            List<Root> rootGroupList = await _bl.GetRootListByGroupIdAsync(id);
+            if (rootGroupList != null)
+                {
+                return Ok(rootGroupList);
+                }
+            else
+                {
+                return NoContent();
+                }
+            }
+
 
         // GET api/<PostController>/5
         [HttpGet("{id}")]

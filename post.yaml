@@ -1,17 +1,32 @@
-apiVersion: v1
-kind: Pod
-metadata: 
-  name: post-pod
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-deployment
   namespace: apollo
-  labels: {
-    app: post-pod
-  }
-spec: 
-  containers: 
-  - name: post-pod
-    image: joninfante/post:latest
-    ports:
-    - containerPort: 80
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: post-deployment
+  template:
+    metadata:
+      labels:
+        app: post-deployment
+    spec:
+      containers:
+      - name: post-deployment
+        image: joninfante/post:latest
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+
 ---
 apiVersion: v1
 kind: Service
@@ -20,7 +35,7 @@ metadata:
   namespace: apollo
 spec:
   ports:
-  - targetPort: 80
-    port: 5001
+  - port: 80
   selector:
-    app: post-pod
+    app: post-deployment
+
