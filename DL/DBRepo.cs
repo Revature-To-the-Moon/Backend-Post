@@ -158,6 +158,7 @@ namespace DL
                     Title = r.Title,
                     TotalVote = r.TotalVote,
                     UserName = r.UserName,
+                    GroupPostId = r.GroupPostId,
 
                     Comments = r.Comments.Where(r => r.ParentId == -1).Select(a => new Comment()
                     {
@@ -298,7 +299,8 @@ namespace DL
                 Message = root.Message,
                 Title = root.Title,
                 TotalVote = root.TotalVote,
-                UserName = root.UserName
+                UserName = root.UserName,
+                GroupPostId = root.GroupPostId
             };
         }
 

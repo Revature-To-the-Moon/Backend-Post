@@ -108,7 +108,7 @@ namespace Tests
                                 Votes = new List<Vote>()
                                     {
                                     new Vote ()
-                                         {
+                                        {
                                         Id = 5,
                                         UserName = "Bob",
                                         Value = 1
@@ -155,7 +155,7 @@ namespace Tests
                                 Votes = new List<Vote>()
                                     {
                                     new Vote ()
-                                         {
+                                        {
                                         Id = 5,
                                         UserName = "Bob",
                                         Value = 1
@@ -198,7 +198,7 @@ namespace Tests
                                 Votes = new List<Vote>()
                                     {
                                     new Vote ()
-                                         {
+                                        {
                                         Id = 5,
                                         UserName = "Bob",
                                         Value = 1
@@ -240,7 +240,7 @@ namespace Tests
                                 Votes = new List<Vote>()
                                     {
                                     new Vote ()
-                                         {
+                                        {
                                         Id = 5,
                                         UserName = "Bob",
                                         Value = 1
