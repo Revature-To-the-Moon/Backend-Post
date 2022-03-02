@@ -8,10 +8,8 @@ connectionString.txt
 
 #Ignore appsettings
 appsettings.Development.json
-appsettings.json
 
 # User-specific files
-appsettings.json
 appsettings.Development.json
 *.rsuser
 *.suo
